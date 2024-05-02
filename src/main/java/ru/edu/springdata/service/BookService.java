@@ -1,5 +1,6 @@
 package ru.edu.springdata.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.edu.springdata.model.Book;
 import ru.edu.springdata.repository.BookRepository;
@@ -7,12 +8,11 @@ import ru.edu.springdata.repository.BookRepository;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BookService {
     private final BookRepository bookRepository;
 
-    public BookService(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
+
 
     public Book getBook(long id) {
         return bookRepository.findById(id).orElse(null);
@@ -23,15 +23,15 @@ public class BookService {
     }
 
     public List<Book> getBooksByLanguage(String language) {
-        return bookRepository.findByLanguage(language);
+        return bookRepository.findBooksByLanguage(language);
     }
 
     public List<Book> getBooksByCategory(String category) {
-        return bookRepository.findByCategory(category);
+        return bookRepository.findBooksByCategory(category);
     }
 
     public List<Book> getBooksByLanguageAndCategory(String language, String category) {
-        return bookRepository.findByLanguageAndCategory(language, category);
+        return bookRepository.findBooksByLanguageAndCategory(language, category);
     }
 
     public Book save(Book book) {
@@ -39,14 +39,14 @@ public class BookService {
     }
 
     public void update(Book book) {
-        bookRepository.update(book);
+        bookRepository.save(book);
     }
 
     public void delete(Long id) {
-        bookRepository.delete(id);
+        bookRepository.deleteById(id);
     }
 
     public long getRecordCount() {
-        return bookRepository.getRecordCount();
+        return bookRepository.count();
     }
 }
